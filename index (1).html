@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RETRO INVEST</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    background:#202020;
+    color:#d8d8d8;
+    font-family:"Courier New",monospace;
+    min-height:100vh;
+    padding:15px;
+}
+
+.container{
+    width:100%;
+    max-width:600px;
+    margin:auto;
+    background:#111;
+    border:4px solid #777;
+    box-shadow:
+        6px 6px 0 #000,
+        inset 0 0 0 2px #333;
+}
+
+/* TOPO */
+
+header{
+    background:#333;
+    border-bottom:3px solid #777;
+    padding:18px;
+    text-align:center;
+}
+
+header h1{
+    font-size:24px;
+    letter-spacing:3px;
+}
+
+header p{
+    margin-top:6px;
+    color:#aaa;
+    font-size:12px;
+}
+
+/* DISPLAY */
+
+.display{
+    margin:18px;
+    padding:18px;
+    background:#071107;
+    border:4px inset #666;
+    color:#55ff55;
+    text-align:right;
+    min-height:95px;
+}
+
+.display small{
+    display:block;
+    font-size:11px;
+    color:#3fbd3f;
+}
+
+#finalValue{
+    display:block;
+    font-size:29px;
+    margin-top:10px;
+    word-break:break-word;
+}
+
+/* FORM */
+
+.form{
+    padding:0 18px 18px;
+}
+
+label{
+    display:block;
+    margin-top:14px;
+    margin-bottom:6px;
+    font-size:13px;
+    color:#aaa;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    background:#222;
+    border:3px inset #666;
+    color:#fff;
+    font-family:inherit;
+    font-size:16px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#aaa;
+}
+
+/* BOTÃO */
+
+button{
+    width:100%;
+    margin-top:18px;
+    padding:15px;
+    background:#555;
+    color:white;
+    border:3px outset #888;
+    font-family:inherit;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:active{
+    border-style:inset;
+}
+
+/* RESULTADOS */
+
+.results{
+    padding:0 18px 18px;
+}
+
+.result{
+    background:#1c1c1c;
+    border:2px solid #555;
+    padding:13px;
+    margin-top:9px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.result span:first-child{
+    color:#999;
+}
+
+.result span:last-child{
+    text-align:right;
+    color:#eee;
+}
+
+/* BARRA */
+
+.bar-box{
+    margin-top:18px;
+    border:2px solid #555;
+    padding:4px;
+}
+
+.bar{
+    height:18px;
+    width:0%;
+    background:#55ff55;
+    transition:width .6s;
+}
+
+/* RODAPÉ */
+
+footer{
+    padding:12px;
+    border-top:3px solid #555;
+    text-align:center;
+    color:#777;
+    font-size:10px;
+}
+
+/* CELULAR */
+
+@media(max-width:420px){
+
+    body{
+        padding:7px;
+    }
+
+    header h1{
+        font-size:20px;
+    }
+
+    #finalValue{
+        font-size:23px;
+    }
+
+    .result{
+        flex-direction:column;
+    }
+
+    .result span:last-child{
+        text-align:left;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>RETRO INVEST</h1>
+    <p>[ CALCULADORA DE INVESTIMENTOS ]</p>
+</header>
+
+
+<div class="display">
+
+    <small>VALOR FUTURO ESTIMADO</small>
+
+    <span id="finalValue">
+        R$ 0,00
+    </span>
+
+</div>
+
+
+<div class="form">
+
+    <label>VALOR INICIAL (R$)</label>
+
+    <input
+        id="initial"
+        type="number"
+        min="0"
+        step="0.01"
+        placeholder="Ex: 1000"
+    >
+
+
+    <label>APORTE MENSAL (R$)</label>
+
+    <input
+        id="monthly"
+        type="number"
+        min="0"
+        step="0.01"
+        placeholder="Ex: 200"
+    >
+
+
+    <label>RENDIMENTO ANUAL (%)</label>
+
+    <input
+        id="rate"
+        type="number"
+        min="0"
+        step="0.01"
+        placeholder="Ex: 10"
+    >
+
+
+    <label>TEMPO (ANOS)</label>
+
+    <input
+        id="years"
+        type="number"
+        min="1"
+        step="1"
+        placeholder="Ex: 10"
+    >
+
+
+    <button onclick="calculate()">
+        [ CALCULAR ]
+    </button>
+
+</div>
+
+
+<div class="results">
+
+    <div class="result">
+        <span>Total investido</span>
+        <span id="invested">R$ 0,00</span>
+    </div>
+
+    <div class="result">
+        <span>Rendimentos</span>
+        <span id="profit">R$ 0,00</span>
+    </div>
+
+    <div class="result">
+        <span>Valor final</span>
+        <span id="total">R$ 0,00</span>
+    </div>
+
+
+    <div class="bar-box">
+        <div
+            class="bar"
+            id="bar"
+        ></div>
+    </div>
+
+</div>
+
+
+<footer>
+    RETRO INVEST v1.0 — SIMULAÇÃO
+</footer>
+
+</div>
+
+
+<script>
+
+function money(value){
+
+    return value.toLocaleString(
+        "pt-BR",
+        {
+            style:"currency",
+            currency:"BRL"
+        }
+    );
+
+}
+
+
+function calculate(){
+
+    const initial =
+        Number(
+            document.getElementById("initial").value
+        ) || 0;
+
+    const monthly =
+        Number(
+            document.getElementById("monthly").value
+        ) || 0;
+
+    const annualRate =
+        Number(
+            document.getElementById("rate").value
+        ) || 0;
+
+    const years =
+        Number(
+            document.getElementById("years").value
+        ) || 0;
+
+
+    if(years <= 0){
+
+        alert("Digite um período válido.");
+
+        return;
+
+    }
+
+
+    /*
+        Converte a taxa anual aproximada
+        para uma taxa mensal equivalente.
+    */
+
+    const monthlyRate =
+        Math.pow(
+            1 + annualRate / 100,
+            1 / 12
+        ) - 1;
+
+
+    const months = years * 12;
+
+
+    /*
+        Valor inicial
+    */
+
+    let total = initial;
+
+
+    /*
+        Simulação mês a mês
+    */
+
+    for(let i=0;i<months;i++){
+
+        total =
+            total * (1 + monthlyRate)
+            + monthly;
+
+    }
+
+
+    const invested =
+        initial + monthly * months;
+
+
+    const profit =
+        total - invested;
+
+
+    document.getElementById("finalValue")
+        .textContent = money(total);
+
+    document.getElementById("invested")
+        .textContent = money(invested);
+
+    document.getElementById("profit")
+        .textContent = money(profit);
+
+    document.getElementById("total")
+        .textContent = money(total);
+
+
+    /*
+        Barra visual:
+        representa quanto do resultado
+        veio dos rendimentos.
+    */
+
+    let percentage =
+        total > 0
+        ? (profit / total) * 100
+        : 0;
+
+
+    percentage =
+        Math.min(Math.max(percentage,0),100);
+
+
+    document.getElementById("bar")
+        .style.width = percentage + "%";
+
+}
+
+</script>
+
+</body>
+</html>
+
